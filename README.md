@@ -91,6 +91,31 @@ Publish the website in Localhost.
 </body>
 </html>
 ```
+## views.py
+```
+from django.shortcuts import render
+
+def churn_rate(request):
+    v = float(request.POST.get('initial', '0'))
+    s = float(request.POST.get('lost', '0'))
+
+    churn = (s / v) * 100 if request.method == 'POST' and v != 0 else 0
+
+    print("initial customers =", v)
+    print("customers lost =", s)
+    print("churn rate =", churn)
+
+    return render(request, 'my1app/churn.html', {'v': v, 's': s, 'churn': churn})
+```
+## urls.py
+```
+from django.urls import path
+from my1app import views
+
+urlpatterns = [
+    path('', views.churn_rate, name='churn_rate'),
+]
+```
 
 ## OUTPUT - SERVER SIDE:
 ![alt text](image-1.png)
